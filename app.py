@@ -2,7 +2,8 @@ import streamlit as st
 import pandas as pd
 import os
 from bs4 import BeautifulSoup
-from weasyprint import HTML
+from weasyprint import HTML, CSS
+from weasyprint.text.fonts import FontConfiguration
 import zipfile
 from io import BytesIO
 
@@ -29,8 +30,33 @@ def merge_data(data, template):
         print(f"Creating PDF for {data['id'][i]}")
         # print(f'soup content: {soup}')
         # html to pdf using weasyprint with A4 size
-        HTML(string=str(soup)).write_pdf(f'{data["id"][i]}.pdf')
-
+        font_config = FontConfiguration()
+        styles = CSS(string=
+            """
+                @font-face {
+                    font-family: 'SukhumvitSet';  
+                    src: url('font/SukhumvitSet-Light.ttf') format('truetype');
+                    font-weight: 300;  /* Adjust for light weight */
+                }
+                @font-face {
+                    font-family: 'SukhumvitSet';  
+                    src: url('font/SukhumvitSet-Medium.ttf') format('truetype');
+                    font-weight: normal; /* or 400 */
+                }
+                @font-face {
+                    font-family: 'SukhumvitSet';  
+                    src: url('font/SukhumvitSet-Bold.ttf') format('truetype');
+                    font-weight: bold;  /* or 700 */
+                }
+                @font-face {
+                    font-family: 'SukhumvitSet';  
+                    src: url('font/SukhumvitSet-Thin.ttf') format('truetype');
+                    font-weight: 100;  /* Adjust for thin weight */
+                }
+            """, 
+            font_config=font_config
+        )
+        HTML(string=str(soup)).write_pdf(f'{data["id"][i]}.pdf', stylesheets=[styles], font_config=font_config)
 
 #function to download the merged files as zip
 def download_file(data):

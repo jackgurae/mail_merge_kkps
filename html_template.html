@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Information Form</title>
+    <style>
+        /* Define 4-page A4 dimensions and set page margins */
+        @font-face {
+            font-family: 'SukhumvitSet';
+            src: url('font/SukhumvitSet-Light.ttf') format('truetype');
+            font-weight: 300;
+            /* Adjust for light weight */
+        }
+
+        @font-face {
+            font-family: 'SukhumvitSet';
+            src: url('font/SukhumvitSet-Text.ttf') format('truetype');
+            font-weight: normal;
+            /* or 400 */
+        }
+
+        @font-face {
+            font-family: 'SukhumvitSet';
+            src: url('font/SukhumvitSet-Bold.ttf') format('truetype');
+            font-weight: bold;
+            /* or 700 */
+        }
+
+        @font-face {
+            font-family: 'SukhumvitSet';
+            src: url('font/SukhumvitSet-Medium.ttf') format('truetype');
+            font-weight: 100;
+            /* Adjust for thin weight */
+        }
+
+        body {
+            width: 210mm;
+            height: 297mm;
+            margin-top: 10mm;
+            margin-left: 5mm;
+            margin-right: auto;
+            font-family: 'SukhumvitSet' !important;
+            /* !important to override the default font */
+            /* Using Arial for clearer prints, but you can use any preferred font */
+            font-size: 10px;
+            padding: 0mm 0mm;
+
+            /* A4 margins for better content fitting */
+        }
+
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @media print {
+
+            body {
+                width: 190mm;
+                font-size: 10px;
+                padding: 10mm 0mm;
+                font-family: 'SukhumvitSet' !important;
+                /* Reset body margins and padding */
+            }
+
+            table,
+            th,
+            td {
+                border-collapse: collapse;
+                padding: 5px;
+            }
+
+        }
+
+        .page {
+            page-break-after: always;
+            margin-top: 10mm;
+        }
+
+        input[type="checkbox"] {
+            transform: scale(0.5);
+            /* Scale down to 80% */
+        }
+
+        table,
+        th,
+        td {
+            /* border: 1px solid black; */
+            border-collapse: collapse;
+            padding: 10px;
+            width: 100%;
+            /* make tables span the full width */
+        }
+
+        th {
+            background-color: #f2f2f2;
+            /* light gray background for headers */
+        }
+
+        .no-border {
+            border: none;
+        }
+
+        .top-table {
+            width: 100%;
+        }
+
+        .bottom-table {
+            width: 100%;
+            border: 1px solid black;
+        }
+
+        .bottom-table th,
+        .bottom-table td {
+            border: 1px solid black;
+        }
+
+        /* apply to both td and th */
+        .bottom-table td:nth-child(1),
+        .bottom-table th:nth-child(1) {
+            width: 30%;
+        }
+
+        .bottom-table td:nth-child(2),
+        .bottom-table th:nth-child(2) {
+            width: 35%;
+        }
+
+        .bottom-table td:nth-child(3),
+        .bottom-table th:nth-child(3) {
+            width: 35%;
+        }
+
+        .business-table {
+            width: 100%;
+            border: 1px solid black;
+        }
+
+        .business-table td {
+            width: 3%;
+            /* Set default width for checkboxes */
+        }
+
+        .business-table td:nth-child(even) {
+            width: 30%;
+            /* Apply wider width to even columns (2, 4, 6) */
+        }
+
+        .occupation-table {
+            width: 100%;
+            border: 1px solid black;
+        }
+
+        .occupation-table td {
+            width: 5%;
+            /* Set default width for checkboxes */
+        }
+
+        .occupation-table td:nth-child(even) {
+            width: 20%;
+            /* Apply wider width to even columns (2, 4, 6) */
+        }
+
+        .ipq-table {
+            width: 100%;
+            border: 1px solid black;
+        }
+
+        .ipq-table td {
+            border: 1px solid black;
+        }
+
+        .supporting-documents {
+            width: 100%;
+            border: 1px solid black;
+        }
+
+        .supporting-documents th,
+        .supporting-documents td {
+            border: 1px solid black;
+            width: 30%;
+            vertical-align: top;
+        }
+
+        .supporting-documents td:nth-child(2) {
+            width: 70%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <table class="top-table">
+            <tr>
+                <td style="width: 15%">Customer Name (ไอดีลูกค้า)</td>
+                <td style="width: 30%"><span id="client_name">{{client_name}}</span></td>
+                <td style="width: 20%">Financial Consultant (คำแนะนำทางการเงิน)</td>
+                <td style="width: 35%"><span id="fc_name">{{fc_name}}</span></td>
+            </tr>
+            <tr>
+                <td style="width: 20%">Investor Classification (ประเภทลงทุนลูกค้า)</td>
+                <td style="width: 30%"><span id="client_classification">{{client_classification}}</span></td>
+            </tr>
+        </table>
+
+
+        <h2>Customer Information (ข้อมูลลูกค้า)</h2>
+        <table class="bottom-table">
+
+            <tr>
+                <th>General Information (ข้อมูลทั่วไป)</th>
+                <th>Existing Information with KKP Securities</th>
+                <th>Would like to update new information as follows:</th>
+            </tr>
+            <tr>
+                <td>Customer Name (ชื่อลูกค้า)</td>
+                <td><span id="client_name2">{{client_name2}}</span></td>
+                <td>*กรุณาดูเอกสารเพิ่มเติมกรณีต้องการเปลี่ยนแปลงข้อมูล<br>
+                    *Please refer to Supporting Documents for Changing Information.
+                </td>
+            </tr>
+            <tr>
+                <td>Director and/or Authorized Partner</td>
+                <td><span id="director_authorized">{{director_authorized}}</span></td>
+                <td>*กรุณาดูเอกสารเพิ่มเติมกรณีต้องการเปลี่ยนแปลงข้อมูล<br>
+                    *Please refer to Supporting Documents for Changing Information.
+                </td>
+            </tr>
+            <tr>
+                <td>Registered Address (ที่อยู่ตามทะเบียนการค้า)</td>
+                <td><span id="registered_address_cis">{{registered_address_cis}}</span></td>
+                <td>*กรุณาดูเอกสารเพิ่มเติมกรณีต้องการเปลี่ยนแปลงข้อมูล<br>
+                    *Please refer to Supporting Documents for Changing Information.
+                </td>
+            </tr>
+            <tr>
+                <td>Mailing Address (ที่อยู่สำหรับรับจดหมาย)</td>
+                <td><span id="mailing_address_cis">{{mailing_address_cis}}</span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Current Address (ที่อยู่ปัจจุบัน)</td>
+                <td><span id="current_address_cis">{{current_address_cis}}</span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Nationality (สัญชาติ)</td>
+                <td><span id="nationality">{{nationality}}</span></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Occupation/Corporate Type</td>
+                <td><span id="occupation">{{occupation}}</span></td>
+                <td>กรณีที่มีการเปลี่ยนแปลงข้อมูลอาชีพ/ลักษณะของกิจการ
+                    โปรดระบุรายละเอียดตามตารางด้านล่าง<br>
+                    Any change on Occupation/Corporate Type, please input details below.
+                </td>
+
+            </tr>
+            <tr>
+                <td>Type of Business (ประเภทธุรกิจ)</td>
+                <td><span id="business_type">{{business_type}}</span></td>
+                <td>กรณีที่มีการเปลี่ยนแปลงข้อมูลอาชีพ/ลักษณะของกิจการ
+                    โปรดระบุรายละเอียดตามตารางด้านล่าง<br>
+                    Any change on Occupation/Corporate Type, please input details below.
+                </td>
+
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="page">
+        <br>
+        <br>
+        <h2>กรณีที่มีการเปลี่ยนแปลง ประเภทกิจการ / ลักษณะของกิจการ Type of Business Change / Corporate Type Change</h2>
+        <table class="business-table">
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>หน่วยงานราชการ/รัฐวิสาหกิจ<br>Government Agencies / State Enterprises</td>
+                    <td><input type="checkbox"></td>
+                    <td>สถาบันการศึกษา<br>Educational Institution</td>
+                    <td><input type="checkbox"></td>
+                    <td>การเงิน/การธนาคาร/ประกันภัย<br>Finance and Banking / Insurance Business</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>วิศวกรรม/เทคโนโลยี/ยานยนต์<br>Engineering / Technology / Automobile Industry</td>
+                    <td><input type="checkbox"></td>
+                    <td>พลังงาน/สาธารณูปโภค<br>Energy Industry / Public Utility</td>
+                    <td><input type="checkbox"></td>
+                    <td>ก่อสร้าง/อสังหาริมทรัพย์<br>Construction Industry / Real Estate Business</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>ค้าส่ง/ค้าปลีก โปรดระบุ<br>Wholesale Trade / Retail Trade (Specify)
+                        ______________________<br>______________________________</td>
+                    <td><input type="checkbox"></td>
+                    <td>ขนส่ง/บรรจุภัณฑ์<br>Transportation Business / Packaging Business</td>
+                    <td><input type="checkbox"></td>
+                    <td>สื่อ/สิ่งพิมพ์/บันเทิง<br>Publishing and Printing / Entertainment Industry</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>บริการด้านความงาม/สุขภาพ<br>Health and Beauty Services</td>
+                    <td><input type="checkbox"></td>
+                    <td>บริการทางการแพทย์<br>Medical Services</td>
+                    <td><input type="checkbox"></td>
+                    <td>ศาสนาสถาน/องค์กรที่ไม่แสวงหากำไร/การกุศล<br>Religious Place, NGOs, Charities</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>สำนักงานกฎหมาย<br>Law Firm</td>
+                    <td><input type="checkbox"></td>
+                    <td>สิ่งทอ/เสื้อผ้า/เครื่องแต่งกาย<br>Textile / Clothing / ApparelIndustry</td>
+                    <td><input type="checkbox"></td>
+                    <td>ธุรกิจค้าของเก่า ศิลปะหรือวัตถุโบราณ<br>Art, Antiquity Dealer</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>ธุรกิจแลกเปลี่ยนเงินตราต่างประเภท<br>Authorized currency exchange business</td>
+                    <td><input type="checkbox"></td>
+                    <td>ธุรกิจโอนเงินระหว่างประเทศ<br>International money transfer service</td>
+                    <td><input type="checkbox"></td>
+                    <td>ธุรกิจคาสิโนหรือบ่อนการพนัน<br>Casino</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>ธุรกิจสถานบริการ อาบอบนวด ไนต์คลับ สถานบันเทิง<br>Entertainment Complex, Cabaret, Nightclub,
+                        Club</td>
+                    <td><input type="checkbox"></td>
+                    <td>ธุรกิจค้าอาวุธยุทธภัณฑ์<br>Weapon dealers</td>
+                    <td><input type="checkbox"></td>
+                    <td>ธุรกิจจัดหางาน<br>Work or employment agencies</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>ธุรกิจนำเที่ยว บริษัททัวร์<br>Travel Agencies, Touring companies</td>
+                    <td><input type="checkbox"></td>
+                    <td>ธุรกิจค้าอัญมณี เพชรพลอย ทองคำ โลหะมีค่า หรือเครื่องประดับที่ประกอบด้วยอัญมณี เพชรพลอย ทองคำ
+                        โลหะมีค่า<br>Jeweler, gem, gold, precious metal dealers or Dealers for ornament that consisted
+                        of jewelry, gem, gold, precious metal.</td>
+                    <td><input type="checkbox"></td>
+                    <td>อื่นๆ<br>Others, please specify ____________<br>______________________________</td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>กรณีมีการเปลี่ยนแปลง อาชีพ / ข้อมูลที่ทำงาน (เฉพาะบุคคลธรรมดา) Occupation and workplace detail Change
+            (Individual Only)</h2>
+        <table class="occupation-table">
+            <tbody>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>พนักงาน/ผู้บริหารบริษัทเอกชน<br>Employee/Managing Director</td>
+                    <td><input type="checkbox"></td>
+                    <td>เจ้าของกิจการ<br>Business Owner</td>
+                    <td><input type="checkbox"></td>
+                    <td>ข้าราชการ/พนักงานรัฐวิสาหกิจ<br>Government officials</td>
+                    <td><input type="checkbox"></td>
+                    <td>นิสิต/นักศึกษา<br>Student</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>พ่อบ้าน/แม่บ้าน/ไม่ได้ทำงาน<br>Steward/Housewife/Unemployed</td>
+                    <td><input type="checkbox"></td>
+                    <td>เกษียณอายุ<br>Retired</td>
+                    <td><input type="checkbox"></td>
+                    <td>อื่นๆ _____________________</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="info" style="font-size: 12px; margin-top: 20px;">
+            <p style="line-height: 2;">
+                ชื่อสถานที่ทำงาน /
+                กิจการ(ไทย)..........................................................................................................................................................<br>
+                Employer/Business
+                Name(Eng.).....................................................................................................................................................
+            </p>
+            <p>ตำแหน่ง..................................................................................
+                รายได้ต่อปี
+                (ล้านบาท).........................................................................<br>
+                Position/Title
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Annual Salary (Btm.)
+            </p>
+            <p style="line-height: 2;">
+                ที่อยู่ที่ทำงาน/Office Address<br>
+                เลขที่/No..............หมู่ที่/Moo..........หมู่บ้าน/Village............................................อาคาร/Building...........................................................<br>
+                ชั้น/Floor......................ซอย/Soi........................................................ถนน/Road.................................................................................<br>
+                แขวง/ตำบล/Sub
+                District...................................เขต/อำเภอ/District.....................................จังหวัด/Province.......................................<br>
+                รหัสไปรษณีย์/Zip
+                code.......................ประเทศ/Country..................................โทรศัพท์(ที่ทำงาน)/Office
+                Phone.....................................
+            </p>
+        </div>
+    </div>
+
+    <div class="page">
+        <br>
+        <br>
+        <table>
+            <tbody>
+                <tr>
+                    <td style="width: 20%;">ชื่อลูกค้า<br>Customer Name</td>
+                    <td style="width: 30%;"><span id="client_name3">{{client_name3}}</span></td>
+                    <td style="width: 20%;">เจ้าหน้าที่ดูแลบัญชี<br>Financial Consultant</td>
+                    <td style="width: 30%;"><span id="fc_name2">{{fc_name2}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <h2>ข้อมูลผลการประเมินความเหมาะสมในการลงทุน / Investor Profile Evaluation</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <td style="width: 20%;">เลขที่บัญชี<br>Account No.</td>
+                    <td style="width: 30%;"><span id="account_no">{{account_no}}</span></td>
+                    <td style="width: 20%;">ชื่อบัญชี<br>Account Name</td>
+                    <td style="width: 30%;"><span id="account_name">{{account_name}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="ipq-table">
+            <tbody>
+                <tr>
+                    <td style="width: 30%;">ผลการประเมินความเหมาะสมในการลงทุน<br>Investor Profile Evaluation</td>
+                    <td style="width: 70%;"><span id="ipq_result">{{ipq_result}}</span></td>
+                </tr>
+                <tr>
+                    <td style="width: 30%;">คำนิยาม<br>Description</td>
+                    <td style="width: 70%;"><span id="investment_objective">{{investment_objective}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <tbody>
+                <tr>
+                    <td style="width: 30%;"> **สิทธิและข้อจำกัดสิทธิ<br>**Right and Limitation</td>
+                    <td style="width: 70%;"><span id="t_and_c" style="word-wrap: break-word;">{{t_and_c}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="info" style="font-size: 14px;">
+
+
+            <br><br><br>
+            <p style="line-height: 2;">
+                _________________________________________<br>
+                ลายมือชื่อลูกค้า / Customer’s Signature
+            </p>
+            <p style="line-height: 2;">
+                ชื่อ / Name ________________________________
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;________________________________<br>
+                วันที่ / Date ________________________________
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;ตราประทับ (ถ้ามี) / Seal (If any)
+            </p>
+        </div>
+    </div>
+    <div class="page">
+        <br>
+        <h2>เอกสารประกอบเพิ่มเติมกรณีต้องการเปลี่ยนแปลงข้อมูล</h2>
+        <h2>Supporting Documents for Changing Information</h2>
+        <table class="supporting-documents">
+            <tr>
+                <th>ข้อมูล (Information Change)</th>
+                <th>เอกสารประกอบ (Supporting documents)</th>
+            </tr>
+            <tr>
+                <td>1. เปลี่ยนแปลงชื่อ/สกุล (Individual Name)</td>
+                <td>
+                    <!-- wrap with bold -->
+                    <strong>บุคคลธรรมดา (Individual Person)</strong>
+                    <ol>
+                        <li>สำเนาบัตรประชาชน/หนังสือเดินทาง (กรณีชาวต่างชาติ) พร้อมรับรองสำเนาถูกต้อง</li>
+                        <li>เอกสารแสดงการเปลี่ยนแปลงชื่อ-ชื่อสกุล พร้อมรับรองสำเนาถูกต้อง</li>
+                        <li>สำเนาหน้าแรกของบัญชีเงินฝากธนาคาร พร้อมรับรองสำเนาถูกต้อง</li>
+                    </ol>
+                </td>
+            </tr>
+            <tr>
+                <td>2. เปลี่ยนแปลงชื่อนิติบุคคล หรือ กรรมการผู้มีอำนาจลงนาม (Juristic Name/Authorized Director)</td>
+                <td>
+                    <strong>นิติบุคคล (Juristic Person)</strong>
+                    <ol>
+                        <li>สำเนาหนังสือรับรองการจดทะเบียนนิติบุคคลซึ่งแสดงการเปลี่ยนแปลงชื่อนิติบุคคล
+                            และอายุไม่เกิน 3 เดือน พร้อมรับรองสำเนาถูกต้องโดยผู้มีอำนาจลงนาม และประทับตรานิติบุคคล
+                            (ถ้ามี)</li>
+                        <li>สำเนาบัตรประชาชน/สำเนาหนังสือเดินทาง (กรณีชาวต่างชาติ) ของผู้มีอำนาจลงนาม
+                            พร้อมรับรองสำเนาถูกต้อง</li>
+                        <li>สำเนาหน้าแรกของบัญชีเงินฝากธนาคาร พร้อมรับรองสำเนาถูกต้องโดยผู้มีอำนาจลงนาม
+                            และประทับตรานิติบุคคล (ถ้ามี)</li>
+                    </ol>
+                </td>
+            </tr>
+            <tr>
+                <td>3. เปลี่ยนแปลงที่อยู่ตามทะเบียนบ้าน/ที่อยู่จดทะเบียน (Registered Address)</td>
+                <td>
+                    <strong>บุคคลธรรมดา (Individual Person)</strong>
+                    <ol>
+                        <li>สำเนาบัตรประชาชน/หนังสือเดินทาง (กรณีชาวต่างชาติ) พร้อมรับรองสำเนาถูกต้อง</li>
+                        <li>สำเนาทะเบียนบ้านพร้อมรับรองสำเนาถูกต้อง</li>
+                    </ol>
+                    <strong>นิติบุคคล (Juristic Person)</strong>
+                    <ol>
+                        <li>สำเนาหนังสือรับรองการจดทะเบียนนิติบุคคลซึ่งแสดงที่อยู่จดทะเบียนใหม่และอายุไม่เกิน 3
+                            เดือน พร้อมรับรองสำเนาถูกต้องโดยผู้มีอำนาจลงนาม และประทับตรานิติบุคคล (ถ้ามี)</li>
+                        <li>สำเนาบัตรประชาชน/สำเนาหนังสือเดินทาง (กรณีชาวต่างชาติ) ของผู้มีอำนาจลงนาม
+                            พร้อมรับรองสำเนาถูกต้อง</li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+</html>
