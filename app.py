@@ -70,6 +70,9 @@ st.subheader('Upload the Excel file')
 excel_file = st.file_uploader('Upload the Excel file', type=['xlsx'])
 if excel_file is not None:
     data = read_data(excel_file)
+    data['client_name2'] = data['client_name']
+    data['client_name3'] = data['client_name']
+    data['fc_name2'] = data['fc_name']
     st.write(data)
 
 #upload the html template file
