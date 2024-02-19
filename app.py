@@ -58,7 +58,9 @@ def merge_data(data, template):
 
             # Convert modified HTML to PDF and save it for user to download from browser
             print(f"Creating PDF for {data['id'][i]}")
-            pdf = HTML(string=str(soup)).write_pdf(stylesheets=[styles], font_config=font_config)
+            pdf = HTML(string=str(soup)).write_pdf(
+                stylesheets=[styles], 
+                font_config=font_config)
             filename = f'{data["id"][i]}.pdf'
             zip_file.writestr(filename, pdf)
         
@@ -105,11 +107,11 @@ st.markdown("""
     <style>
         @font-face {
             font-family: 'SukhumvitSet';  
-            src: url('font/SukhumvitSet-Text.ttf') format('truetype');
+            src: url('./font/SukhumvitSet-Text.ttf') format('truetype');
             font-weight: normal; 
         }
         html, body, [class*="css"]  {
-            font-family: 'SukhumvitSet';
+            font-family: 'SukhumvitSet' !important;
             font-size: 24px;
         }
     </style>""", unsafe_allow_html=True)
