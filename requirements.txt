@@ -6,4 +6,4 @@ openpyxl
 lxml
 weasyprint
 zipfile36
-pip install pangocairocffi
+pangocairocffi
