@@ -107,12 +107,11 @@ st.markdown("""
     <style>
         @font-face {
             font-family: 'SukhumvitSet';  
-            src: url('./font/SukhumvitSet-Text.ttf') format('truetype');
+            src: url('https://github.com/bluenex/baansuan_prannok/raw/master/fonts/sukhumvit-set/SukhumvitSet-Text.ttf') format('truetype');
             font-weight: normal; 
         }
         html, body, [class*="css"]  {
             font-family: 'SukhumvitSet' !important;
-            font-size: 24px;
         }
     </style>""", unsafe_allow_html=True)
 st.markdown('This app lets you upload an Excel file and an HTML template file, merge the data from the Excel file into the HTML template file, and then download the merged file.')
