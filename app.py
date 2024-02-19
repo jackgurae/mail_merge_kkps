@@ -16,47 +16,59 @@ def merge_data(data, template):
         'occupation', 'business_type', 'account_no', 'account_name',
         'ipq_result', 'investment_objective', 'client_classification',
         't_and_c', 'director_authorized']
-    for i in range(len(data)):
-        print(f"Processing {i} of {len(data)}: {data['id'][i]}")
-        for column in columns:
-            # print(column)
-            try:
-                soup.find(id=column).string = data[column][i]
-            except:
-                print(f"Error with {column}")
-                pass
+    
+    font_config = FontConfiguration()
+    styles = CSS(string=
+        """
+            @font-face {
+                font-family: 'SukhumvitSet';  
+                src: url('font/SukhumvitSet-Light.ttf') format('truetype');
+                font-weight: 300;  /* Adjust for light weight */
+            }
+            @font-face {
+                font-family: 'SukhumvitSet';  
+                src: url('font/SukhumvitSet-Medium.ttf') format('truetype');
+                font-weight: normal; /* or 400 */
+            }
+            @font-face {
+                font-family: 'SukhumvitSet';  
+                src: url('font/SukhumvitSet-Bold.ttf') format('truetype');
+                font-weight: bold;  /* or 700 */
+            }
+            @font-face {
+                font-family: 'SukhumvitSet';  
+                src: url('font/SukhumvitSet-Thin.ttf') format('truetype');
+                font-weight: 100;  /* Adjust for thin weight */
+            }
+        """, 
+        font_config=font_config
+    )
 
-        # Convert modified HTML to PDF and save it for user to download from browser
-        print(f"Creating PDF for {data['id'][i]}")
-        # print(f'soup content: {soup}')
-        # html to pdf using weasyprint with A4 size
-        font_config = FontConfiguration()
-        styles = CSS(string=
-            """
-                @font-face {
-                    font-family: 'SukhumvitSet';  
-                    src: url('font/SukhumvitSet-Light.ttf') format('truetype');
-                    font-weight: 300;  /* Adjust for light weight */
-                }
-                @font-face {
-                    font-family: 'SukhumvitSet';  
-                    src: url('font/SukhumvitSet-Medium.ttf') format('truetype');
-                    font-weight: normal; /* or 400 */
-                }
-                @font-face {
-                    font-family: 'SukhumvitSet';  
-                    src: url('font/SukhumvitSet-Bold.ttf') format('truetype');
-                    font-weight: bold;  /* or 700 */
-                }
-                @font-face {
-                    font-family: 'SukhumvitSet';  
-                    src: url('font/SukhumvitSet-Thin.ttf') format('truetype');
-                    font-weight: 100;  /* Adjust for thin weight */
-                }
-            """, 
-            font_config=font_config
-        )
-        HTML(string=str(soup)).write_pdf(f'{data["id"][i]}.pdf', stylesheets=[styles], font_config=font_config)
+    memory_zip = BytesIO()
+    with zipfile.ZipFile(memory_zip, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+        for i in range(len(data)):
+            print(f"Processing {i} of {len(data)}: {data['id'][i]}")
+            for column in columns:
+                # print(column)
+                try:
+                    soup.find(id=column).string = data[column][i]
+                except:
+                    print(f"Error with {column}")
+                    pass
+
+            # Convert modified HTML to PDF and save it for user to download from browser
+            print(f"Creating PDF for {data['id'][i]}")
+            pdf = HTML(string=str(soup)).write_pdf(stylesheets=[styles], font_config=font_config)
+            filename = f'{data["id"][i]}.pdf'
+            zip_file.writestr(filename, pdf)
+        
+    memory_zip.seek(0)
+    st.download_button(
+        label="Download Zip File",
+        data=memory_zip,
+        file_name="merged_files.zip",
+        mime='application/zip'
+    )
 
 #function to download the merged files as zip
 def download_file(data):
@@ -89,8 +101,20 @@ def read_template(html):
     #     return BeautifulSoup(file.read(), 'lxml') 
 
 st.title('Mail Merge App')
+st.markdown("""
+    <style>
+        @font-face {
+            font-family: 'SukhumvitSet';  
+            src: url('font/SukhumvitSet-Text.ttf') format('truetype');
+            font-weight: normal; 
+        }
+        html, body, [class*="css"]  {
+            font-family: 'SukhumvitSet';
+            font-size: 24px;
+        }
+    </style>""", unsafe_allow_html=True)
 st.markdown('This app lets you upload an Excel file and an HTML template file, merge the data from the Excel file into the HTML template file, and then download the merged file.')
-
+st.markdown("ภาษาไทย")
 #upload the excel file
 st.subheader('Upload the Excel file')
 excel_file = st.file_uploader('Upload the Excel file', type=['xlsx'])
@@ -111,4 +135,4 @@ if template_file is not None:
 #merge the data from the excel file into the html template file
 if st.button('Merge Data'):
     merge_data(data, template)
-    download_file(data)
+    # download_file(data)
