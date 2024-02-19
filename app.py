@@ -59,28 +59,12 @@ def merge_data(data, template):
             # Convert modified HTML to PDF and save it for user to download from browser
             print(f"Creating PDF for {data['id'][i]}")
             pdf = HTML(string=str(soup)).write_pdf(
-                stylesheets=[styles], 
+                stylesheets=[styles],
+                zoom=1,
                 font_config=font_config)
             filename = f'{data["id"][i]}.pdf'
             zip_file.writestr(filename, pdf)
         
-    memory_zip.seek(0)
-    st.download_button(
-        label="Download Zip File",
-        data=memory_zip,
-        file_name="merged_files.zip",
-        mime='application/zip'
-    )
-
-#function to download the merged files as zip
-def download_file(data):
-    memory_zip = BytesIO()
-    with zipfile.ZipFile(memory_zip, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-        for i in range(len(data['id'])): 
-            filename = f'{data["id"][i]}.pdf'
-            zip_file.write(filename)
-
-    # Provide the Download Button
     memory_zip.seek(0)
     st.download_button(
         label="Download Zip File",
@@ -136,4 +120,3 @@ if template_file is not None:
 #merge the data from the excel file into the html template file
 if st.button('Merge Data'):
     merge_data(data, template)
-    # download_file(data)
