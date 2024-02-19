@@ -1,0 +1,8 @@
+pandas
+beautifulsoup4
+pdfkit
+streamlit
+openpyxl
+lxml
+weasyprint
+zipfile36
