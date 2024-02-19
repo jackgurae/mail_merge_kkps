@@ -22,22 +22,22 @@ def merge_data(data, template):
         """
             @font-face {
                 font-family: 'SukhumvitSet';  
-                src: url('font/SukhumvitSet-Light.ttf') format('truetype');
+                src: url('https://github.com/bluenex/baansuan_prannok/raw/master/fonts/sukhumvit-set/SukhumvitSet-Light.ttf') format('truetype');
                 font-weight: 300;  /* Adjust for light weight */
             }
             @font-face {
                 font-family: 'SukhumvitSet';  
-                src: url('font/SukhumvitSet-Medium.ttf') format('truetype');
+                src: url('https://github.com/bluenex/baansuan_prannok/raw/master/fonts/sukhumvit-set/SukhumvitSet-Medium.ttf') format('truetype');
                 font-weight: normal; /* or 400 */
             }
             @font-face {
                 font-family: 'SukhumvitSet';  
-                src: url('font/SukhumvitSet-Bold.ttf') format('truetype');
+                src: url('https://github.com/bluenex/baansuan_prannok/raw/master/fonts/sukhumvit-set/SukhumvitSet-Bold.ttf') format('truetype');
                 font-weight: bold;  /* or 700 */
             }
             @font-face {
                 font-family: 'SukhumvitSet';  
-                src: url('font/SukhumvitSet-Thin.ttf') format('truetype');
+                src: url('https://github.com/bluenex/baansuan_prannok/raw/master/fonts/sukhumvit-set/SukhumvitSet-Thin.ttf') format('truetype');
                 font-weight: 100;  /* Adjust for thin weight */
             }
         """, 
