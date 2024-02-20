@@ -69,7 +69,7 @@ def merge_data(data, template):
                 file.write(pdf)
 
             pdf = Pdf.open('temp.pdf')
-            password = data['pid_last4']
+            password = data["pid_last4"][i]
             pdf.save(f'{data["id"][i]}.pdf', encryption=Encryption(user=password, owner=password, R=4))
             zip_file.write(f'{data["id"][i]}.pdf')
 
