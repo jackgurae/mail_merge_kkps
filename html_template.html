@@ -183,6 +183,16 @@
         .supporting-documents td:nth-child(2) {
             width: 70%;
         }
+
+        p {
+            /* Or the specific element you're targeting */
+            white-space: nowrap;
+            /* Prevent breaking within the element */
+            word-break: keep-all;
+            /* Prevent breaking of words if they don't fit */
+            hyphens: none;
+            /* Disable hyphenation */
+        }
     </style>
 </head>
 
@@ -381,10 +391,8 @@
             <p>ตำแหน่ง..................................................................................
                 รายได้ต่อปี
                 (ล้านบาท).........................................................................<br>
-                Position/Title
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                Annual Salary (Btm.)
+                Position/Title<span class="spacer" style="padding-left: 55mm; display: inline-block;"></span>Annual
+                Salary (Btm.)
             </p>
             <p style="line-height: 2;">
                 ที่อยู่ที่ทำงาน/Office Address<br>
@@ -437,7 +445,8 @@
             <tbody>
                 <tr>
                     <td style="width: 30%;"> **สิทธิและข้อจำกัดสิทธิ<br>**Right and Limitation</td>
-                    <td style="width: 70%;"><span id="t_and_c" style="word-wrap: break-word;">{{t_and_c}}</span>
+                    <td style="width: 70%;"><span id="t_and_c"
+                            style="word-wrap: break-word; padding-left: 0;">{{t_and_c}}</span>
                     </td>
                 </tr>
             </tbody>
@@ -452,16 +461,11 @@
             </p>
             <p style="line-height: 2;">
                 ชื่อ / Name ________________________________
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;________________________________<br>
+                <span class="spacer"
+                    style="padding-left: 50mm; display: inline-block;"></span>________________________________<br>
                 วันที่ / Date ________________________________
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                &nbsp;&nbsp;&nbsp;ตราประทับ (ถ้ามี) / Seal (If any)
+                <span class="spacer" style="padding-left: 50mm; display: inline-block;">ตราประทับ (ถ้ามี) / Seal (If
+                    any)
             </p>
         </div>
     </div>

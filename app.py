@@ -6,7 +6,8 @@ from weasyprint import HTML, CSS
 from weasyprint.text.fonts import FontConfiguration
 import zipfile
 from io import BytesIO
-
+import subprocess
+from pikepdf import Pdf, Permissions, Encryption
 #function to merge the data from the excel file into the html template file
 def merge_data(data, template):
     soup = template
@@ -44,6 +45,7 @@ def merge_data(data, template):
         font_config=font_config
     )
 
+   
     memory_zip = BytesIO()
     with zipfile.ZipFile(memory_zip, 'w', zipfile.ZIP_DEFLATED) as zip_file:
         for i in range(len(data)):
@@ -62,8 +64,23 @@ def merge_data(data, template):
                 stylesheets=[styles],
                 zoom=1,
                 font_config=font_config)
-            filename = f'{data["id"][i]}.pdf'
-            zip_file.writestr(filename, pdf)
+            # encrypt with password 1234 using pikepdf
+            with open('temp.pdf', 'wb') as file:
+                file.write(pdf)
+
+            pdf = Pdf.open('temp.pdf')
+            password = data['pid_last4']
+            pdf.save(f'{data["id"][i]}.pdf', encryption=Encryption(user=password, owner=password, R=4))
+            zip_file.write(f'{data["id"][i]}.pdf')
+
+            # encrypt with password 1234 using qpdf
+            # with open('temp.pdf', 'wb') as file:
+            #     file.write(pdf)
+            # subprocess.run(['qpdf', '--encrypt', '', '1234', '256', '--', 'temp.pdf', f'{data["id"][i]}.pdf'])
+            # zip_file.write(f'{data["id"][i]}.pdf')
+            # os.remove('temp.pdf')
+            # filename = f'{data["id"][i]}.pdf'
+            # zip_file.writestr(filename, pdf)
         
     memory_zip.seek(0)
     st.download_button(
@@ -108,6 +125,7 @@ if excel_file is not None:
     data['client_name2'] = data['client_name']
     data['client_name3'] = data['client_name']
     data['fc_name2'] = data['fc_name']
+    data['pid_last4'] = data['pid'].astype(str).str[-4:]
     st.write(data)
 
 #upload the html template file
