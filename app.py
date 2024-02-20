@@ -72,6 +72,8 @@ def merge_data(data, template):
             password = data["pid_last4"][i]
             pdf.save(f'{data["id"][i]}.pdf', encryption=Encryption(user=password, owner=password, R=4))
             zip_file.write(f'{data["id"][i]}.pdf')
+            os.remove('temp.pdf')
+            os.remove(f'{data["id"][i]}.pdf')
 
             # encrypt with password 1234 using qpdf
             # with open('temp.pdf', 'wb') as file:
